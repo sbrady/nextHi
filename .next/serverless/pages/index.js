@@ -1038,7 +1038,7 @@ function Home() {
         Document: _document_default.a,
         buildManifest: build_manifest,
         reactLoadableManifest: react_loadable_manifest,
-        buildId: "dcUKZjO_LoghQ1edloAbM",
+        buildId: "a96JOKhYUaqZuUBk3m9z5",
         dynamicBuildId: false,
         assetPrefix: "",
         ampBindInitData: false
