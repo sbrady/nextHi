@@ -1,5 +1,5 @@
 import Link from 'next/link'
-
+import fetch from 'isomorphic-unfetch'
 
 class Home extends React.Component {
 
@@ -14,31 +14,27 @@ class Home extends React.Component {
         <h1>HumansBeingBros</h1>
 
 
-        {this.state.bros? <div>{this.state.bros }</div>: <div>Loading...</div>}
-
+        {this.props.bros ? <div>{this.props.bros}</div> : <div>Loading...</div>}
 
       </>
 
     );
   }
 
-  componentDidMount() {
-
-
-    fetch('https://www.reddit.com/r/HumansBeingBros.json')
-      .then(function(response) {
-        return response.json();
-      })
-      .then((myJson)=> {
-
-
-        let titles = myJson.data.children.map(child => child.data).map(data=>data.title)
-
-        this.setState({bros: titles})
-        console.log(JSON.stringify(titles));
-      });
-
-  }
 }
+
+
+ Home.getInitialProps = async () => {
+  const res = await fetch('https://www.reddit.com/r/HumansBeingBros.json')
+  const data = await res.json()
+  let titles = data.data.children.map(child => child.data).map(data => data.title)
+  return {
+    bros: titles
+  }
+
+
+}
+
+
 
 export default Home
