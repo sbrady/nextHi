@@ -3,7 +3,9 @@ import fetch from 'isomorphic-unfetch'
 
 class Home extends React.Component {
 
-  state = {}
+  state = {
+    bros: this.props.bros
+  }
 
   render() {
     return (
@@ -14,25 +16,50 @@ class Home extends React.Component {
         <h1>HumansBeingBros</h1>
 
 
-        {this.props.bros ? <div>{this.props.bros}</div> : <div>Loading...</div>}
+        {this.state.bros ? <div>{this.state.bros}</div> : <div>Loading...</div>}
 
       </>
 
     );
   }
 
+
+
+
+  componentDidMount() {
+
+    fetchThatData().then(bros => {
+      this.setState(bros)
+    })
+
+  }
+
+
 }
 
 
- Home.getInitialProps = async () => {
+ Home.getInitialProps = async (context) => {
+
+  if(process.browser) {
+    return {
+      bros: null
+    }
+
+  }
+
+  console.log(context)
+
+   return fetchThatData()
+
+}
+
+async function fetchThatData() {
   const res = await fetch('https://www.reddit.com/r/HumansBeingBros.json')
   const data = await res.json()
   let titles = data.data.children.map(child => child.data).map(data => data.title)
   return {
     bros: titles
   }
-
-
 }
 
 
